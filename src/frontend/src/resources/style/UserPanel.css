@@ -1,0 +1,9 @@
+.user-box {
+  margin-bottom: 5px !important;
+}
+
+tr:hover {
+  cursor: pointer;
+  background-color: rgb(240, 240, 240);
+  transition: 0.2s;
+}

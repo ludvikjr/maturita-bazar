@@ -1,0 +1,22 @@
+.rating-negative {
+  background-color: rgba(153, 0, 0);
+  color: white;
+}
+
+.rating-positive {
+  background-color: rgba(0, 97, 2);
+  color: white;
+}
+
+.rating-negative,
+.rating-positive {
+  border-radius: 5px;
+}
+
+.rating-container {
+  width: 10% !important;
+}
+
+.review {
+  margin-bottom: 20px;
+}

@@ -1,0 +1,23 @@
+.car-box:hover {
+  cursor: pointer;
+  background-color: rgb(240, 240, 240);
+  transition: 0.2s;
+}
+.car-box {
+  margin-bottom: 5px !important;
+}
+
+td {
+  width: 25%;
+}
+
+tr,
+tbody,
+thead {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  padding: 5px;
+}

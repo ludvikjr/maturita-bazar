@@ -1,0 +1,81 @@
+.hero {
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#slideset {
+  height: 576px;
+}
+
+#slide1 {
+  background-image: -webkit-linear-gradient(
+      top,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ),
+    url(../hero1.jpg);
+}
+
+#slide2 {
+  background-image: -webkit-linear-gradient(
+      top,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ),
+    url(../hero2.jpg);
+}
+
+#slide3 {
+  background-image: -webkit-linear-gradient(
+      top,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ),
+    url(../hero3.jpg);
+}
+
+@keyframes slide-fading {
+  0% {
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  33.33% {
+    opacity: 1;
+  }
+  37.33% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+#slideset > * {
+  animation: 12s slide-fading infinite linear;
+  position: absolute;
+  left: 0;
+  right: 0;
+  opacity: 0;
+}
+
+#slideset > *:nth-child(1) {
+  animation-delay: 0s;
+}
+#slideset > *:nth-child(2) {
+  animation-delay: 4s;
+}
+#slideset > *:nth-child(3) {
+  animation-delay: 8s;
+}
+
+@media screen and (max-width: 1280px) {
+  .hero {
+    background-size: cover;
+    height: 200px;
+  }
+  #slideset {
+    height: 200px;
+  }
+}

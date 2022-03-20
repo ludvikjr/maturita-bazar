@@ -1,0 +1,96 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh !important;
+  min-width: 100vw !important;
+  padding: 0.3em;
+}
+
+.container {
+  margin-top: 0;
+}
+
+hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+#load {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#cars {
+  margin-top: 0;
+}
+
+.filter-notice {
+  max-height: 40px;
+}
+
+.filter-notice > i {
+  text-align: right;
+  cursor: pointer;
+}
+
+#maincontent {
+  padding-left: 5em;
+  padding-right: 5em;
+  padding-bottom: 1em;
+}
+
+.has-text-navy-blue {
+  color: #12285b !important;
+}
+
+.has-background-navy-blue {
+  background-color: #12285b !important;
+}
+
+.has-text-navy-blue.button {
+  color: #12285b !important;
+  border: 0.1px solid #12285b;
+}
+
+.has-text-navy-blue:hover.button {
+  background-color: rgb(230, 230, 230);
+  transition: 0.2s;
+  border: 0.1px solid #12285b;
+}
+
+.is-danger {
+  background-color: rgb(153, 0, 0) !important;
+}
+
+.is-success {
+  background-color: rgb(0, 97, 2) !important;
+}
+
+.is-danger:hover,
+.is-danger:focus {
+  background-color: #700101 !important;
+}
+
+.is-success:hover,
+.is-success:focus {
+  background-color: #004701 !important;
+}
+
+@media screen and (max-width: 1280px) {
+  #maincontent {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media screen and (max-width: 1220px) {
+  #maincontent {
+    flex-direction: column !important;
+  }
+  #filter-form {
+    width: 100%;
+  }
+}

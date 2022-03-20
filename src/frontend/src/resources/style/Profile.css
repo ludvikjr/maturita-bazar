@@ -1,0 +1,112 @@
+#container {
+  width: 45%;
+}
+
+#avatar {
+  display: block;
+  margin: auto;
+  border-radius: 50%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  width: 350px;
+  height: 350px;
+}
+
+#name > h1 {
+  text-align: center;
+  font-size: 3em;
+}
+
+#rating {
+  text-align: center;
+}
+
+#rating > h2 > span {
+  font-size: 1em;
+}
+
+.info-box,
+.review-box,
+.review-list {
+  width: 90%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rating {
+  margin: 5px;
+}
+
+.contact-row {
+  margin-top: 20px;
+}
+
+.negative-rating {
+  background-color: rgba(153, 0, 0, 30%);
+  color: rgba(255, 255, 255, 30%)
+}
+
+.negative-rating:hover,
+.negative-rating:focus {
+  background-color: rgba(153, 0, 0);
+}
+
+.positive-rating {
+  background-color: rgba(0, 97, 2, 30%);
+}
+
+.positive-rating:hover,
+.positive-rating:focus {
+  background-color: rgba(0, 97, 2);
+}
+
+.fa-thumbs-down,
+.fa-thumbs-up {
+  color: rgba(0, 0, 0, 50%);
+}
+
+.fa-thumbs-down:focus,
+.fa-thumbs-down:hover,
+.fa-thumbs-up:hover,
+.fa-thumbs-up:focus {
+  color: rgba(255, 255, 255)
+}
+
+.loading {
+  display: block;
+  margin: auto;
+}
+
+.submit-error {
+  margin-left: 10px;
+}
+
+@media screen and (max-width: 900px) {
+  #container {
+    width: 90% !important;
+    padding: 0 !important;
+    padding-bottom: 20px;
+  }
+  .info-box,
+  .review-box,
+  .review-list {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 1220px) {
+  .info-box,
+  .review-box,
+  .review-list {
+    width: 70%;
+  }
+  #container {
+    width: 70%;
+    padding-bottom: 20px;
+  }
+  #avatar {
+    width: 250px;
+    height: auto;
+  }
+}

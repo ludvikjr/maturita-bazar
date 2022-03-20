@@ -1,0 +1,18 @@
+.about-container {
+  width: 45%;
+  padding: 3em;
+}
+
+@media screen and (max-width: 1220px) {
+  .about-container {
+    width: 60%;
+    padding: 2em;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .about-container {
+    width: 90%;
+    padding: 1em;
+  }
+}

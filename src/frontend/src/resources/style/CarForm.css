@@ -1,0 +1,42 @@
+#form-container {
+  width: 45%;
+  margin: auto;
+  padding: 3em;
+}
+
+.select,
+select,
+option {
+  width: 100%;
+}
+
+.textarea {
+  margin-bottom: 10px;
+}
+
+.control > span {
+  font-size: 0.8em;
+}
+
+span.file-cta {
+  font-size: 1em;
+  margin-bottom: 5px;
+}
+
+@media screen and (max-width: 1690px) {
+  #form-container {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 1350px) {
+  #form-container {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  #form-container {
+    width: 90%;
+  }
+}

@@ -1,0 +1,36 @@
+#signup {
+  margin-right: 0.5em;
+}
+
+#nav-list > span {
+  transition: 0.2s;
+}
+
+#nav-list {
+  box-shadow: none;
+  width: 100%;
+  background-color: inherit;
+}
+
+.navbar-burger:hover {
+  transition: 0.5s;
+}
+
+.navbar-burger:not(:hover) {
+  transition: 0.5s;
+}
+
+.navbar {
+  margin: 10px;
+  padding: 0.7em !important;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding: 0;
+  border-bottom: 1px black;
+}
+
+a.navbar-item:hover,
+a.navbar-item:focus {
+  color: black;
+  transition: 0.5s;
+}
