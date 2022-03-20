@@ -1,6 +1,10 @@
 import React from "react";
 import "../resources/style/About.css";
 
+/**
+ * Simple about page
+ * @returns About page
+ */
 export default function About() {
   return (
     <div className="box container about-container">

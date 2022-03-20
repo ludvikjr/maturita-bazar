@@ -4,8 +4,8 @@ require("dotenv").config();
 
 /**
  * Adds a new Car to the database
- * @param req - request made by a user
- * @param res - response made by the server
+ * @param req request made by a user
+ * @param res response made by the server
  * @returns HTTP status code, errors
  */
 exports.addCar = async (req, res) => {
@@ -45,8 +45,8 @@ exports.addCar = async (req, res) => {
 
 /**
  * Gets 5 cars from the database
- * @param req - request made by a user
- * @param res - response made by the server
+ * @param req request made by a user
+ * @param res response made by the server
  * @returns first 5 cars in the db
  */
 exports.getCars = async (req, res) => {
@@ -76,6 +76,12 @@ exports.getCars = async (req, res) => {
   }
 };
 
+/**
+ * Gets cars passing regex conditions
+ * @param {*} req request made by user
+ * @param {*} res response sent by server
+ * @returns
+ */
 exports.getFilteredCars = async (req, res) => {
   try {
     const { name, brand, model, minCost, maxCost } = req.body;
@@ -109,8 +115,8 @@ exports.getFilteredCars = async (req, res) => {
 
 /**
  * Gets car by its id
- * @param req - request made by a user
- * @param res - response made by the server
+ * @param req request made by a user
+ * @param res response made by the server
  * @returns car
  */
 exports.getCarById = async (req, res) => {

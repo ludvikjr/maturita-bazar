@@ -3,8 +3,8 @@ const User = require("../models/user.js");
 
 /**
  * Checks if person didn't already make a review on this particular user
- * @param req - request made by the user
- * @param validatedReview - review that's being validated
+ * @param req request made by the user
+ * @param validatedReview review that's being validated
  */
 const checkValidity = (req, validatedReview) => {
   const reviews = this.getUsersReviews(req);
@@ -20,8 +20,8 @@ const checkValidity = (req, validatedReview) => {
 
 /**
  * Adds new user review to the database
- * @param req - request made the user
- * @param res - response sent by the server
+ * @param req request made the user
+ * @param res response sent by the server
  * @returns HTTP status code, errors
  */
 exports.addReview = async (req, res) => {
@@ -65,8 +65,8 @@ exports.addReview = async (req, res) => {
 
 /**
  * Gets user's reviews
- * @param req - request made the user
- * @param res - response sent by the server
+ * @param req request made the user
+ * @param res response sent by the server
  * @returns user's reviews
  */
 exports.getUsersReviews = async (req, res) => {
@@ -88,8 +88,8 @@ exports.getUsersReviews = async (req, res) => {
 
 /**
  * Deletes review from the database
- * @param req - request made the user
- * @param res - response sent by the server
+ * @param req request made the user
+ * @param res response sent by the server
  * @returns HTTP status code, errors
  */
 exports.deleteReview = async (req, res) => {

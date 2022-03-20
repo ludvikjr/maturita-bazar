@@ -10,9 +10,17 @@ import Loader from "../Loader";
 import Async from "react-async";
 import CarListItem from "./CarListItem";
 
+/**
+ * Car page
+ * @returns Car page
+ */
 export default function Car() {
   const { id } = useParams();
 
+  /**
+   * Checks if user didn't expire
+   * @returns username
+   */
   const getUsername = () => {
     try {
       const username = localStorage.getItem("username");
@@ -33,6 +41,10 @@ export default function Car() {
     }
   };
 
+  /**
+   * Gets resources from the API
+   * @returns resources
+   */
   const getResources = async () => {
     try {
       const cars = await axios({
@@ -71,14 +83,22 @@ export default function Car() {
   const [isEditing, setEditing] = useState(false);
 
   return (
+    /**
+     * useAsync hook used here for loading
+     */
     <Async promiseFn={getResources} id={id}>
       {({ data, err, isPending }) => {
         if (isPending) return <Loader />;
         if (err) return <div>oops something went wrong</div>;
         if (!isPending) {
+          /**
+           * Data gotten from the request
+           */
           const { car, cats } = data;
-          console.log(car);
 
+          /**
+           * Deletes car
+           */
           const handleDelete = async () => {
             try {
               const result = await axios({
@@ -93,6 +113,9 @@ export default function Car() {
             }
           };
 
+          /**
+           * User input validation
+           */
           let validation = true;
           const validate = () => {
             if (!document.getElementById("name").value) {
@@ -194,8 +217,13 @@ export default function Car() {
             return false;
           };
 
-          const makeOptionList = (listArray) => {
-            const list = listArray.map((item) => {
+          /**
+           * Makes option list
+           * @param {*} cats
+           * @returns option list
+           */
+          const makeOptionList = (cats) => {
+            const list = cats.map((item) => {
               const option = (
                 <option value={item.name} key={nanoid()}>
                   {item.name}
@@ -211,6 +239,9 @@ export default function Car() {
           const transmissionList = makeOptionList(cats.transmissions);
           const carTypeList = makeOptionList(cats.types);
 
+          /**
+           * Makes all car attributes into state
+           */
           setName(car.name);
           setPower(car.power);
           setManufactured(car.manufactured);
@@ -220,6 +251,9 @@ export default function Car() {
           setDescription(car.description);
           setModel(car.model);
 
+          /**
+           * default view
+           */
           const defaultTemplate = (
             <div>
               <div className="box">
@@ -285,6 +319,9 @@ export default function Car() {
             </div>
           );
 
+          /**
+           * View for editing
+           */
           const editTemplate = (
             <div>
               <div className="box">

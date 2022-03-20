@@ -7,6 +7,10 @@ import "../../resources/style/CarForm.css";
 
 import { nanoid } from "@reduxjs/toolkit";
 
+/**
+ * Gets cathegories from the API
+ * @returns Cathegories
+ */
 const getCats = async () => {
   try {
     const result = await axios({
@@ -20,6 +24,10 @@ const getCats = async () => {
   }
 };
 
+/**
+ * Form for new cars
+ * @returns New car form
+ */
 export default function CarForm() {
   const [name, setName] = useState("");
   const [power, setPower] = useState(0);
@@ -45,6 +53,9 @@ export default function CarForm() {
   const [imageError, setImageError] = useState("");
 
   return (
+    /**
+     * useAsync hook for loading
+     */
     <Async promiseFn={getCats}>
       {({ data, err, isPending }) => {
         if (isPending) return <Loader />;
@@ -52,8 +63,13 @@ export default function CarForm() {
         if (!isPending) {
           const cats = data;
 
-          const makeOptionList = (listArray) => {
-            const list = listArray.map((item) => {
+          /**
+           * Makes an option list for cathegories select
+           * @param {*} cats cathegories
+           * @returns options list
+           */
+          const makeOptionList = (cats) => {
+            const list = cats.map((item) => {
               const option = (
                 <option value={item.name} key={nanoid()}>
                   {item.name}
@@ -64,11 +80,17 @@ export default function CarForm() {
             return list;
           };
 
+          /**
+           * Option list for every cathegory
+           */
           const colorList = makeOptionList(cats.colors);
           const brandsList = makeOptionList(cats.brands);
           const transmissionList = makeOptionList(cats.transmissions);
           const carTypeList = makeOptionList(cats.types);
 
+          /**
+           * Validation of user input
+           */
           let validation = true;
           const validate = () => {
             if (image === null) {
@@ -126,6 +148,10 @@ export default function CarForm() {
             }
           };
 
+          /**
+           * Posts car to the API
+           * @param {*} formData data sent by the user
+           */
           const postCar = async (formData) => {
             try {
               const result = await axios({
@@ -141,6 +167,9 @@ export default function CarForm() {
             }
           };
 
+          /**
+           * Submits form
+           */
           const handleSubmit = async () => {
             setConsumptionError("");
             setNameError("");

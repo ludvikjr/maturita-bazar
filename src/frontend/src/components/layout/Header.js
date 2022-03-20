@@ -2,7 +2,15 @@ import React from "react";
 import "../../resources/style/Header.css";
 import { Link } from "react-router-dom";
 
+/**
+ * Header with navbar
+ * @returns Header of the page
+ */
 export default function Header() {
+  /**
+   * Checks if user didn't expire
+   * @returns username
+   */
   const getUsername = () => {
     try {
       const username = localStorage.getItem("username");
@@ -26,6 +34,9 @@ export default function Header() {
   const username = getUsername();
   const userType = localStorage.getItem("userType");
 
+  /**
+   * If user is not logged in
+   */
   const defaultView = (
     <nav className=" navbar has-background-white-bis">
       <div className="navbar-brand">
@@ -73,6 +84,9 @@ export default function Header() {
     </nav>
   );
 
+  /**
+   * If user is logged in
+   */
   const loggedView = (
     <nav className=" navbar has-background-white-bis">
       <div className="navbar-brand">

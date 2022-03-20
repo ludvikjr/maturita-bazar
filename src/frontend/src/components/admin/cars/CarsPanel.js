@@ -7,12 +7,20 @@ import Pages from "../../layout/Pages";
 
 import "../../../resources/style/CarsPanel.css";
 
+/**
+ * Car tab for admin panel
+ * @returns Car tab in admin panel
+ */
 export default function CarsPanel() {
   const [cars, setCars] = useState(null);
   const [carLoading, setCarLoading] = useState(true);
 
   const page = useSelector((state) => state.cars.page);
 
+  /**
+   * Gets cars from the API
+   * @param {Number} page
+   */
   const getCars = async (page) => {
     try {
       setCarLoading(true);
@@ -23,7 +31,7 @@ export default function CarsPanel() {
           "Content-Type": "application/json",
         },
         data: {
-          page: page,
+          page: 0,
           limit: 0,
         },
       });
@@ -37,11 +45,14 @@ export default function CarsPanel() {
   };
 
   useEffect(() => {
-    getCars(page);
-  }, [page]);
+    getCars();
+  }, []);
 
   if (carLoading) return <Loader />;
 
+  /**
+   * Makes table row for every car
+   */
   const carList = cars?.map((car) => {
     return (
       <tr

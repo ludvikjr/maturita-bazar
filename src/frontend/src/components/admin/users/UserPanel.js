@@ -6,9 +6,16 @@ import Loader from "../../Loader";
 
 import "../../../resources/style/UserPanel.css";
 
+/**
+ * Users tab of admin panel
+ * @returns Users tab
+ */
 export default function UserPanel() {
   const [users, setUsers] = useState(null);
 
+  /**
+   * GET request for users
+   */
   const getUsers = async () => {
     try {
       const result = await axios({
@@ -25,8 +32,14 @@ export default function UserPanel() {
     getUsers();
   }, []);
 
+  /**
+   * If users are not loaded, return Loader
+   */
   if (!users) return <Loader />;
 
+  /**
+   * Makes table row for each user
+   */
   const userList = users.map((user) => {
     return (
       <tr onClick={() => (window.location = `/profile/${user.username}`)}>

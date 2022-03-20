@@ -3,6 +3,11 @@ import React, { useState } from "react";
 
 import "../../../resources/style/Button.css";
 
+/**
+ * Button for new cathegories
+ * @param {*} props Props passed down by cathegories tab in admin panel
+ * @returns New cathegory button
+ */
 export default function Button(props) {
   const [addingNew, setAddingNew] = useState(false);
 

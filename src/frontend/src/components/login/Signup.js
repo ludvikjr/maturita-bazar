@@ -3,6 +3,10 @@ import "../../resources/style/Signup.css";
 
 import axios from "axios";
 
+/**
+ * Signup page for new users
+ * @returns Signup page
+ */
 function Signup() {
   const [agreed, setAgreed] = useState(false);
 
@@ -23,6 +27,9 @@ function Signup() {
     !agreed ? setAgreed(true) : setAgreed(false);
   };
 
+  /**
+   * Validates user input
+   */
   let validation = true;
   const validate = () => {
     const emailRegex =
@@ -62,6 +69,9 @@ function Signup() {
     }
   };
 
+  /**
+   * Submits form
+   */
   const handleSubmit = async () => {
     setLastNameError("");
     setPasswordError("");

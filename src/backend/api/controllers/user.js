@@ -5,8 +5,8 @@ require("dotenv").config();
 
 /**
  * User signup
- * @param req - request made the user
- * @param res - response sent by the server
+ * @param req request made the user
+ * @param res response sent by the server
  * @returns HTTP status code, errors
  */
 exports.signUp = async (req, res) => {
@@ -43,8 +43,8 @@ exports.signUp = async (req, res) => {
 
 /**
  * User login
- * @param req - request made the user
- * @param res - response sent by the server
+ * @param req request made the user
+ * @param res response sent by the server
  * @returns JWT access and refresh token
  */
 exports.signIn = async (req, res) => {
@@ -99,8 +99,8 @@ exports.signIn = async (req, res) => {
 
 /**
  * Updates user in the database
- * @param req - request made the user
- * @param res - response sent by the server
+ * @param req request made the user
+ * @param res response sent by the server
  * @returns HTTP status code, errors
  */
 exports.updateUser = async (req, res) => {
@@ -133,8 +133,8 @@ exports.updateUser = async (req, res) => {
 
 /**
  * Deletes user from the database
- * @param req - request made the user
- * @param res - response sent by the server
+ * @param req request made the user
+ * @param res response sent by the server
  * @returns HTTP status code, errors
  */
 exports.deleteUser = async (req, res) => {
@@ -170,9 +170,9 @@ exports.deleteUser = async (req, res) => {
 };
 
 /**
- * grabs a user from the database
- * @param req - request made by the user
- * @param res - response sent by the server
+ * Grabs a user from the database
+ * @param req request made by the user
+ * @param res response sent by the server
  * @returns user info
  */
 exports.getUserByUsername = async (req, res) => {
@@ -194,6 +194,11 @@ exports.getUserByUsername = async (req, res) => {
   }
 };
 
+/**
+ * Gets all users (without password)
+ * @param {*} req request made by user
+ * @param {*} res response sent by server
+ */
 exports.getUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password -__v").exec();

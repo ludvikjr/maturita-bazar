@@ -5,6 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { setPage } from "../../redux/carSlice";
 
+/**
+ * Paging system
+ * @param {*} props - props passed down from App.js
+ * @returns Next page buttons
+ */
 export default function Pages(props) {
   const { filtered, cars, limit } = props;
 
@@ -15,6 +20,9 @@ export default function Pages(props) {
   const [nextPageCars, setNextPageCars] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  /**
+   * Gets next page so it can check if it's not empty
+   */
   const getNextPage = async () => {
     try {
       const result = await axios({

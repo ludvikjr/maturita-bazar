@@ -8,6 +8,10 @@ import CathegoriesPanel from "./cats/CathegoriesPanel";
 import UserPanel from "./users/UserPanel";
 import CarsPanel from "./cars/CarsPanel";
 
+/**
+ * Administration home page
+ * @returns Admin panel page
+ */
 function AdminPanel() {
   return (
     <div className="container">

@@ -2,8 +2,8 @@ const { Color, Type, Brand, Transmission } = require("../models/cats.js");
 
 /**
  * Adds new car colors to the database
- * @param req - request made by a user
- * @param res - response sent by the server
+ * @param req request made by a user
+ * @param res response sent by the server
  * @returns HTTP status code, errors
  */
 exports.addColor = async (req, res) => {
@@ -33,8 +33,8 @@ exports.addColor = async (req, res) => {
 
 /**
  * Adds new types of transmissions to the database
- * @param req - request made by a user
- * @param res - response sent by the server
+ * @param req request made by a user
+ * @param res response sent by the server
  * @returns HTTP status code, errors
  */
 exports.addTransmission = async (req, res) => {
@@ -63,8 +63,8 @@ exports.addTransmission = async (req, res) => {
 
 /**
  * Adds new car types to the database
- * @param req - request made by a user
- * @param res - response sent by the server
+ * @param req request made by a user
+ * @param res response sent by the server
  * @returns HTTP status code, errors
  */
 exports.addType = async (req, res) => {
@@ -93,8 +93,8 @@ exports.addType = async (req, res) => {
 
 /**
  * Adds new car brands to the database
- * @param req - request made by a user
- * @param res - response sent by the server
+ * @param req request made by a user
+ * @param res response sent by the server
  * @returns HTTP status code, errors
  */
 exports.addBrand = async (req, res) => {
@@ -121,6 +121,11 @@ exports.addBrand = async (req, res) => {
   }
 };
 
+/**
+ * Gets all cathegories
+ * @param {*} req request made by user
+ * @param {*} res response sent by server
+ */
 exports.getCats = async (req, res) => {
   try {
     const brands = await Brand.find().select("-__v");
@@ -141,6 +146,12 @@ exports.getCats = async (req, res) => {
   }
 };
 
+/**
+ * Deletes cathegory from the database
+ * @param {*} req request made by user
+ * @param {*} res response sent by server
+ * @returns HTTP status code, errors
+ */
 exports.deleteCat = async (req, res) => {
   try {
     if (req.userData.userType != "admin") return res.status(403);

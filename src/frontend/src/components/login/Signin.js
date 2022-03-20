@@ -3,6 +3,10 @@ import "../../resources/style/Signup.css";
 
 import axios from "axios";
 
+/**
+ * Login page for existing users
+ * @returns Signin page
+ */
 function Signin() {
   const setUserInfo = (username, userType) => {
     const now = new Date();
@@ -12,6 +16,9 @@ function Signin() {
     localStorage.setItem("userType", userType);
   };
 
+  /**
+   * Submits form
+   */
   const handleSubmit = async () => {
     setEmailError("");
     setPasswordError("");
@@ -48,6 +55,9 @@ function Signin() {
   const [passwordError, setPasswordError] = useState("");
   const [loginError, setLoginError] = useState("");
 
+  /**
+   * Validates user input
+   */
   let validation = true;
   const validate = () => {
     const emailRegex =

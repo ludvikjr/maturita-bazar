@@ -5,6 +5,10 @@ import Button from "./Button";
 
 import "../../../resources/style/CathegoriesPanel.css";
 
+/**
+ * Cathegories tab in admin panel
+ * @returns Cathegories tab
+ */
 export default function CathegoriesPanel() {
   const [cats, setCats] = useState(null);
   const [catsLoading, setCatsLoading] = useState(true);
@@ -12,8 +16,14 @@ export default function CathegoriesPanel() {
   const [deletedCat, setDeletedCat] = useState("");
   const [deletedCatType, setDeletedCatType] = useState("");
 
+  /**
+   * useRef hook - used for reference in JSX
+   */
   const modal = useRef(null);
 
+  /**
+   * Gets cathegories from the API
+   */
   const getCats = async () => {
     try {
       const result = await axios({
@@ -28,6 +38,11 @@ export default function CathegoriesPanel() {
     }
   };
 
+  /**
+   * Deletes cathegory
+   * @param {*} id cathegory id
+   * @param {*} type which cathegory it is
+   */
   const deleteCat = async (id, type) => {
     try {
       const result = await axios({
@@ -49,8 +64,17 @@ export default function CathegoriesPanel() {
     getCats();
   }, []);
 
+  /**
+   * If cathegories are not loaded, return Loader
+   */
   if (catsLoading) return <Loader />;
 
+  /**
+   * Makes table column
+   * @param {*} items cathegories array
+   * @param {*} type cathegory type
+   * @returns table column
+   */
   const makeTableColumn = (items, type) => {
     return items.map((item) => {
       return (
@@ -69,10 +93,16 @@ export default function CathegoriesPanel() {
     });
   };
 
+  /**
+   * Opens modal
+   */
   const openModal = () => {
     modal.current.classList.add("is-active");
   };
 
+  /**
+   * closes modal
+   */
   const closeModal = () => {
     modal.current.classList.remove("is-active");
   };

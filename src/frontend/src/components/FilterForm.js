@@ -5,8 +5,12 @@ import { useDispatch } from "react-redux";
 
 import "../resources/style/FilterForm.css";
 
-import { toggleFilters, setFilteredCars, setPage } from "../redux/carSlice";
+import { toggleFilters, setFilteredCars } from "../redux/carSlice";
 
+/**
+ * Search form in home page
+ * @returns Search form
+ */
 export default function FilterForm() {
   const [name, setName] = useState("");
   const [minCost, setMinCost] = useState(0);
@@ -15,6 +19,9 @@ export default function FilterForm() {
   const [model, setModel] = useState("");
   const [costError, setCostError] = useState("");
 
+  /**
+   * Validates if the input from user is valid
+   */
   const validate = () => {
     if (maxCost < minCost) {
       setCostError("Max cost must be bigger than min cost..");
@@ -28,7 +35,10 @@ export default function FilterForm() {
 
   const dispatch = useDispatch();
 
-  async function handleSubmit() {
+  /**
+   * Submits the form and sets state for filtered cars
+   */
+  const handleSubmit = async () => {
     setCostError("");
     if (validate()) {
       try {
@@ -49,7 +59,7 @@ export default function FilterForm() {
         dispatch(toggleFilters("ENABLE"));
       } catch (err) {}
     }
-  }
+  };
 
   return (
     <div className="filter-form box">

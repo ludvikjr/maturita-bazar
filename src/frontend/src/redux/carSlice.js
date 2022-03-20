@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+/**
+ * Initial state
+ */
 const initialState = {
   filters: {},
   filteredCars: [],

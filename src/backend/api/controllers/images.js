@@ -17,10 +17,10 @@ const storage = multer.diskStorage({
 });
 
 /**
- * filters for the file
+ * Filters for the file
  * restrictions: type - JPEG, PNG or GIF
- * @param file - file sent by user
- * @param cb - callback fn
+ * @param file file sent by user
+ * @param cb callback fn
  */
 const filter = (req, file, cb) => {
   try {

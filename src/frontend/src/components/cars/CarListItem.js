@@ -1,5 +1,10 @@
 import React from "react";
 
+/**
+ * Bit of JSX for code simplification in Car.js
+ * @param {*} props Passed down by Car component
+ * @returns JSX
+ */
 export default function CarListItem(props) {
   const { item, rowName } = props;
 

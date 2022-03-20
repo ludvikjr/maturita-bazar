@@ -2,6 +2,10 @@ import React from "react";
 
 import "../../resources/style/Hero.css";
 
+/**
+ * Simple hero image
+ * @returns Hero image
+ */
 export default function Hero() {
   return (
     <div id="slideset">

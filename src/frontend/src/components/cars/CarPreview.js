@@ -1,17 +1,28 @@
 import React from "react";
 import { Async } from "react-async";
 import { useHistory } from "react-router-dom";
-import "../../resources/style/CarComponent.css";
+import "../../resources/style/CarPreview.css";
 
-export default function CarComponent(props) {
+/**
+ * Car preview component for home page
+ * @param {*} props props passed down in App component
+ * @returns Car preview
+ */
+export default function CarPreview(props) {
   const car = props.car.car;
 
   const history = useHistory();
 
+  /**
+   * Redirects user to the car page
+   */
   const handleClick = () => {
     history.push(`/cars/${car._id}`);
   };
 
+  /**
+   * @returns Conversion rates from EUR to CZK
+   */
   async function getRateFromApi() {
     try {
       const rate = await fetch(

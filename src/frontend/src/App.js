@@ -22,16 +22,30 @@ import { useSelector, useDispatch } from "react-redux";
 import "./resources/style/App.css";
 import { toggleFilters } from "./redux/carSlice";
 
+/**
+ * Root component of the project
+ * @returns JSX of the whole page
+ */
 function App() {
+  /**
+   * Local state initialization using useState hook
+   */
   const [cars, setCars] = useState([]);
   const [carLoading, setCarLoading] = useState(true);
 
+  /**
+   * Redux state selectors
+   */
   const filteredCars = useSelector((state) => state.cars.filteredCars);
   const filtered = useSelector((state) => state.cars.filtered);
   const page = useSelector((state) => state.cars.page);
 
   const dispatch = useDispatch();
 
+  /**
+   * Sends a GET request for cars to the API
+   * @param {Number} page
+   */
   const getCars = async (page) => {
     try {
       setCarLoading(true);
@@ -55,12 +69,22 @@ function App() {
     }
   };
 
+  /**
+   * useEffect - React hook that does something each render and everytime dependencies update
+   * page - dependency
+   */
   useEffect(() => {
     getCars(page);
   }, [page]);
 
+  /**
+   * If cars are not loaded yet, app returns Loader component (which is a spinning circle)
+   */
   if (carLoading) return <Loader />;
 
+  /**
+   * Returns CarPreview component for every car
+   */
   const carList = cars?.map((car) => {
     return <CarPreview car={car} key={car.car._id} />;
   });
@@ -70,10 +94,19 @@ function App() {
   });
 
   return (
+    /**
+     * React router is responsible for redirects without losing state
+     */
     <Router>
       <div className="App">
+        {/**
+         * Header of the page
+         */}
         <Header />
         <Switch>
+          {/**
+           * Home page
+           */}
           <Route exact path="/">
             <Fragment>
               <Hero />
@@ -119,6 +152,9 @@ function App() {
               </div>
             </Fragment>
           </Route>
+          {/**
+           * Every other path
+           */}
           <Route path="/about" component={About} />
           <Route path="/signup" component={Signup} />
           <Route path="/signin" component={Signin} />

@@ -1,6 +1,11 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
-// token verification
+/**
+ * Authenticates user
+ * @param {*} req Request made by the user
+ * @param {*} res Response sent by the server
+ * @param {*} next
+ */
 module.exports = async (req, res, next) => {
   try {
     const accessToken = req.cookies.accessToken;
@@ -19,15 +24,15 @@ module.exports = async (req, res, next) => {
           userType: data.userType,
         },
         process.env.JWT_ACCESS_KEY,
-        { expiresIn: '3m', noTimestamp: true }
+        { expiresIn: "3m", noTimestamp: true }
       );
-      res.cookie('accessToken', accessToken, {
+      res.cookie("accessToken", accessToken, {
         httpOnly: true,
       });
       req.userData = data;
       next();
     } catch (err) {
-      res.status(401).json({ msg: 'Auth failed', err: err });
+      res.status(401).json({ msg: "Auth failed", err: err });
     }
   }
 };
