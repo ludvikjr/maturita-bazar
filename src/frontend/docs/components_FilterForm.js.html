@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/FilterForm.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/FilterForm.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState } from "react";
+import axios from "axios";
+
+import { useDispatch } from "react-redux";
+
+import "../resources/style/FilterForm.css";
+
+import { toggleFilters, setFilteredCars } from "../redux/carSlice";
+
+/**
+ * Search form in home page
+ * @returns Search form
+ */
+export default function FilterForm() {
+  const [name, setName] = useState("");
+  const [minCost, setMinCost] = useState(0);
+  const [maxCost, setMaxCost] = useState(50000);
+  const [brand, setBrand] = useState("");
+  const [model, setModel] = useState("");
+  const [costError, setCostError] = useState("");
+
+  /**
+   * Validates if the input from user is valid
+   */
+  const validate = () => {
+    if (maxCost &lt; minCost) {
+      setCostError("Max cost must be bigger than min cost..");
+      return false;
+    } else if (maxCost &lt; 0 || minCost &lt; 0) {
+      setCostError("Invalid amount");
+      return false;
+    }
+    return true;
+  };
+
+  const dispatch = useDispatch();
+
+  /**
+   * Submits the form and sets state for filtered cars
+   */
+  const handleSubmit = async () => {
+    setCostError("");
+    if (validate()) {
+      try {
+        const result = await axios({
+          method: "post",
+          url: "/api/cars/filtered",
+          data: {
+            name: name,
+            minCost: minCost,
+            maxCost: maxCost,
+            model: model,
+            brand: brand,
+          },
+        });
+        console.log(result);
+
+        dispatch(setFilteredCars(result.data.cars));
+        dispatch(toggleFilters("ENABLE"));
+      } catch (err) {}
+    }
+  };
+
+  return (
+    &lt;div className="filter-form box">
+      &lt;div className="field">
+        &lt;label className="label">Name&lt;/label>
+        &lt;div className="controls">
+          &lt;input
+            className="input"
+            type="text"
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+            value={name}
+          />
+        &lt;/div>
+      &lt;/div>
+      &lt;div className="field">
+        &lt;label className="label">Brand&lt;/label>
+        &lt;div className="controls">
+          &lt;input
+            className="input"
+            type="text"
+            onChange={(e) => {
+              setBrand(e.target.value);
+            }}
+            value={brand}
+          />
+        &lt;/div>
+      &lt;/div>
+      &lt;div className="field">
+        &lt;label className="label">Model&lt;/label>
+        &lt;div className="controls">
+          &lt;input
+            className="input"
+            type="text"
+            onChange={(e) => {
+              setModel(e.target.value);
+            }}
+            value={model}
+          />
+        &lt;/div>
+      &lt;/div>
+      &lt;div className="field columns">
+        &lt;div className="column">
+          &lt;label className="label">Min cost&lt;/label>
+          &lt;div className="controls">
+            &lt;input
+              className="input"
+              type="text"
+              onChange={(e) => {
+                setMinCost(e.target.value);
+              }}
+              value={minCost}
+            />
+          &lt;/div>
+        &lt;/div>
+        &lt;div className="column">
+          &lt;label className="label">Max cost&lt;/label>
+          &lt;div className="controls">
+            &lt;input
+              className="input"
+              type="text"
+              onChange={(e) => {
+                setMaxCost(e.target.value);
+              }}
+              value={maxCost}
+            />
+          &lt;/div>
+        &lt;/div>
+      &lt;/div>
+      &lt;span className="has-text-danger">{costError}&lt;/span>
+      &lt;div className="field">
+        &lt;button
+          onClick={handleSubmit}
+          className="button has-background-navy-blue has-text-white"
+        >
+          Search
+        &lt;/button>
+      &lt;/div>
+    &lt;/div>
+  );
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AdminPanel">AdminPanel</a></li><li><a href="global.html#App">App</a></li><li><a href="global.html#getCats">getCats</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#Loader">Loader</a></li><li><a href="global.html#Signin">Signin</a></li><li><a href="global.html#Signup">Signup</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Mar 23 2022 20:14:29 GMT+0100 (Středoevropský standardní čas)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

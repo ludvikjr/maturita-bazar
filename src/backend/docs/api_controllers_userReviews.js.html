@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: api/controllers/userReviews.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: api/controllers/userReviews.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const Review = require("../models/userReviews.js");
+const User = require("../models/user.js");
+
+/**
+ * Checks if person didn't already make a review on this particular user
+ * @param req request made by the user
+ * @param validatedReview review that's being validated
+ */
+const checkValidity = (req, validatedReview) => {
+  const reviews = this.getUsersReviews(req);
+  reviews.map((review) => {
+    if (
+      review.to == validatedReview.toUserId &amp;&amp;
+      review.from == validatedReview.fromUserId
+    )
+      return false;
+    return true;
+  });
+};
+
+/**
+ * Adds new user review to the database
+ * @param req request made the user
+ * @param res response sent by the server
+ * @returns HTTP status code, errors
+ */
+exports.addReview = async (req, res) => {
+  try {
+    const username = req.userData.username;
+    const review = new Review({
+      positive: req.body.positive,
+      from: username,
+      to: req.body.to,
+      description: req.body.description,
+    });
+    const result1 = await Review.find({ to: req.body.to, from: username })
+      .select("-__v")
+      .exec();
+    const result2 = await User.find({ username: username })
+      .select("username")
+      .exec();
+    if (result1.length > 0) {
+      return res
+        .status(403)
+        .json({ msg: "One review allowed per user", code: 1 });
+    } else if (result2.length === 0) {
+      return res
+        .status(403)
+        .json({ msg: "You cannot review yourself", code: 2 });
+    }
+    const result3 = await review.save();
+    if (result3) {
+      return res.status(201).json({
+        message: "Review posted",
+        request: {
+          type: "POST",
+        },
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ err: err });
+  }
+};
+
+/**
+ * Gets user's reviews
+ * @param req request made the user
+ * @param res response sent by the server
+ * @returns user's reviews
+ */
+exports.getUsersReviews = async (req, res) => {
+  try {
+    const username = req.params.username;
+    const reviews = await Review.find({ to: username }).select("-__v").exec();
+    const response = {
+      reviews: reviews,
+      method: {
+        type: "GET",
+      },
+    };
+    res.status(200).json(response);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+};
+
+/**
+ * Deletes review from the database
+ * @param req request made the user
+ * @param res response sent by the server
+ * @returns HTTP status code, errors
+ */
+exports.deleteReview = async (req, res) => {
+  try {
+    const username = req.userData.username;
+    const id = req.params.id;
+    const result = await Review.deleteOne({ from: username, __id: id }).exec();
+    if (result) {
+      return res.status(200).json({
+        message: "Review deleted",
+        request: {
+          type: "DELETE",
+        },
+      });
+    }
+    return res.status(404).json({ msg: "Not found" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ err: err });
+  }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addBrand">addBrand</a></li><li><a href="global.html#addCar">addCar</a></li><li><a href="global.html#addColor">addColor</a></li><li><a href="global.html#addReview">addReview</a></li><li><a href="global.html#addTransmission">addTransmission</a></li><li><a href="global.html#addType">addType</a></li><li><a href="global.html#carSchema">carSchema</a></li><li><a href="global.html#checkValidity">checkValidity</a></li><li><a href="global.html#colorSchema">colorSchema</a></li><li><a href="global.html#deleteCar">deleteCar</a></li><li><a href="global.html#deleteCat">deleteCat</a></li><li><a href="global.html#deleteReview">deleteReview</a></li><li><a href="global.html#deleteUser">deleteUser</a></li><li><a href="global.html#filter">filter</a></li><li><a href="global.html#getCarById">getCarById</a></li><li><a href="global.html#getCars">getCars</a></li><li><a href="global.html#getCats">getCats</a></li><li><a href="global.html#getFilteredCars">getFilteredCars</a></li><li><a href="global.html#getIndex">getIndex</a></li><li><a href="global.html#getUserByUsername">getUserByUsername</a></li><li><a href="global.html#getUsers">getUsers</a></li><li><a href="global.html#getUsersReviews">getUsersReviews</a></li><li><a href="global.html#limits">limits</a></li><li><a href="global.html#reviewSchema">reviewSchema</a></li><li><a href="global.html#reviewsRouter">reviewsRouter</a></li><li><a href="global.html#signIn">signIn</a></li><li><a href="global.html#signUp">signUp</a></li><li><a href="global.html#storage">storage</a></li><li><a href="global.html#updateCar">updateCar</a></li><li><a href="global.html#updateUser">updateUser</a></li><li><a href="global.html#userSchema">userSchema</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Wed Mar 23 2022 20:52:48 GMT+0100 (Středoevropský standardní čas)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/cars/CarForm.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/cars/CarForm.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState } from "react";
+import axios from "axios";
+import { Async } from "react-async";
+import Loader from "../Loader";
+
+import "../../resources/style/CarForm.css";
+
+import { nanoid } from "@reduxjs/toolkit";
+
+/**
+ * Gets cathegories from the API
+ * @returns Cathegories
+ */
+const getCats = async () => {
+  try {
+    const result = await axios({
+      method: "get",
+      url: `/api/cats/`,
+    });
+    console.log("cats loaded");
+    return result.data.cats;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+/**
+ * Form for new cars
+ * @returns New car form
+ */
+export default function CarForm() {
+  const [name, setName] = useState("");
+  const [power, setPower] = useState(0);
+  const [manufactured, setManufactured] = useState(0);
+  const [mileage, setMileage] = useState(0);
+  const [cost, setCost] = useState(0);
+  const [consumption, setConsumption] = useState(0);
+  const [description, setDescription] = useState("");
+  const [model, setModel] = useState("");
+  const [image, setImage] = useState(null);
+  const [brand, setBrand] = useState("BMW");
+  const [transmission, setTransmission] = useState("6-Gear Manual");
+  const [color, setColor] = useState("Green");
+  const [type, setType] = useState("Coupe");
+
+  const [nameError, setNameError] = useState("");
+  const [powerError, setPowerError] = useState("");
+  const [mileageError, setMileageError] = useState("");
+  const [costError, setCostError] = useState("");
+  const [consumptionError, setConsumptionError] = useState("");
+  const [manufacturedError, setManufacturedError] = useState("");
+  const [modelError, setModelError] = useState("");
+  const [imageError, setImageError] = useState("");
+
+  return (
+    /**
+     * useAsync hook for loading
+     */
+    &lt;Async promiseFn={getCats}>
+      {({ data, err, isPending }) => {
+        if (isPending) return &lt;Loader />;
+        if (err) return &lt;div>Oops, something went wrong&lt;/div>;
+        if (!isPending) {
+          const cats = data;
+
+          /**
+           * Makes an option list for cathegories select
+           * @param {*} cats cathegories
+           * @returns options list
+           */
+          const makeOptionList = (cats) => {
+            const list = cats.map((item) => {
+              const option = (
+                &lt;option value={item.name} key={nanoid()}>
+                  {item.name}
+                &lt;/option>
+              );
+              return option;
+            });
+            return list;
+          };
+
+          /**
+           * Option list for every cathegory
+           */
+          const colorList = makeOptionList(cats.colors);
+          const brandsList = makeOptionList(cats.brands);
+          const transmissionList = makeOptionList(cats.transmissions);
+          const carTypeList = makeOptionList(cats.types);
+
+          /**
+           * Validation of user input
+           */
+          let validation = true;
+          const validate = () => {
+            if (image === null) {
+              setImageError("Please upload an image");
+            }
+
+            if (!name) {
+              setNameError("Field is required");
+              validation = false;
+            }
+
+            if (!model) {
+              setModelError("Field is required");
+              validation = false;
+            }
+
+            if (!power) {
+              setPowerError("Field is required");
+              validation = false;
+            } else if (isNaN(power)) {
+              setPowerError("Insert a number");
+              validation = false;
+            }
+
+            if (!consumption) {
+              setConsumptionError("Field is required");
+              validation = false;
+            } else if (isNaN(consumption)) {
+              setConsumptionError("Insert a number");
+              validation = false;
+            }
+
+            if (!cost) {
+              setCostError("Field is required");
+              validation = false;
+            } else if (isNaN(cost)) {
+              setCostError("Insert a number");
+              validation = false;
+            }
+
+            if (!mileage) {
+              setMileageError("Field is required");
+              validation = false;
+            } else if (isNaN(mileage)) {
+              setMileageError("Insert a number");
+              validation = false;
+            }
+
+            if (!manufactured) {
+              setManufacturedError("Field is required");
+              validation = false;
+            } else if (isNaN(manufactured)) {
+              setManufacturedError("Insert a number");
+              validation = false;
+            }
+          };
+
+          /**
+           * Posts car to the API
+           * @param {*} formData data sent by the user
+           */
+          const postCar = async (formData) => {
+            try {
+              const result = await axios({
+                method: "post",
+                url: "/api/cars/add",
+                header: { "Content-type": "multipart/form-data" },
+                data: formData,
+                withCredentials: true,
+              });
+              console.log(result);
+            } catch (err) {
+              console.log(err);
+            }
+          };
+
+          /**
+           * Submits form
+           */
+          const handleSubmit = async () => {
+            setConsumptionError("");
+            setNameError("");
+            setManufacturedError("");
+            setMileageError("");
+            setCostError("");
+            setPowerError("");
+            setModelError("");
+            validate();
+            if (validation) {
+              console.log(brand);
+              const formData = new FormData();
+              formData.append("name", name);
+              formData.append("manufactured", manufactured);
+              formData.append("mileage", mileage);
+              formData.append("power", power);
+              formData.append("carType", type);
+              formData.append("color", color);
+              formData.append("brand", brand);
+              formData.append("transmission", transmission);
+              formData.append("cost", cost);
+              formData.append("consumption", consumption);
+              formData.append("description", description);
+              formData.append("model", model);
+              formData.append("carImage", image);
+
+              await postCar(formData);
+              //window.location = '/';
+            }
+          };
+
+          return (
+            &lt;div id="form-container" className="box container">
+              &lt;div className="field columns">
+                &lt;div className="column">
+                  &lt;label className="label">Name&lt;/label>
+                  &lt;div className="control">
+                    &lt;input
+                      id="name"
+                      name="name"
+                      className="input"
+                      type="text"
+                      placeholder="Type a name for your car"
+                      onChange={(e) => {
+                        setName(e.target.value);
+                      }}
+                    />
+                    &lt;span className="has-text-danger">{nameError}&lt;/span>
+                  &lt;/div>
+                &lt;/div>
+                &lt;div className="column">
+                  &lt;label className="label">Power (kW)&lt;/label>
+                  &lt;div className="control">
+                    &lt;input
+                      id="power"
+                      name="power"
+                      className="input"
+                      type="text"
+                      placeholder="? kW"
+                      onChange={(e) => {
+                        setPower(e.target.value);
+                      }}
+                    />
+                    &lt;span className="has-text-danger">{powerError}&lt;/span>
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>
+
+              &lt;div className="field">
+                &lt;div className="columns">
+                  &lt;div className="column is-one-fourth">
+                    &lt;label className="label">Production year&lt;/label>
+                    &lt;div className="control has-icons-right">
+                      &lt;input
+                        id="manufactured"
+                        name="manufactured"
+                        className="input"
+                        type="text"
+                        placeholder="YYYY"
+                        onChange={(e) => {
+                          setManufactured(e.target.value);
+                        }}
+                      />
+                      &lt;span className="has-text-danger">
+                        {manufacturedError}
+                      &lt;/span>
+                    &lt;/div>
+                  &lt;/div>
+
+                  &lt;div className="column is-one-fourth">
+                    &lt;label className="label">Mileage&lt;/label>
+                    &lt;div className="control has-icons-right">
+                      &lt;input
+                        id="mileage"
+                        name="mileage"
+                        className="input"
+                        type="text"
+                        placeholder="Set your mileage"
+                        onChange={(e) => {
+                          setMileage(e.target.value);
+                        }}
+                      />
+                      &lt;span className="has-text-danger">{mileageError}&lt;/span>
+                    &lt;/div>
+                  &lt;/div>
+
+                  &lt;div className="column is-one-fourth">
+                    &lt;label className="label">Price&lt;/label>
+                    &lt;div className="control has-icons-right">
+                      &lt;input
+                        id="cost"
+                        name="cost"
+                        className="input"
+                        type="text"
+                        placeholder="Set your price"
+                        onChange={(e) => {
+                          setCost(e.target.value);
+                        }}
+                      />
+                      &lt;span className="has-text-danger">{costError}&lt;/span>
+                    &lt;/div>
+                  &lt;/div>
+
+                  &lt;div className="column is-one-fourth">
+                    &lt;label className="label">Select type of your car&lt;/label>
+                    &lt;div className="select">
+                      &lt;select
+                        onChange={(e) => setType(e.target.value)}
+                        value={type}
+                        name="type"
+                        id="type"
+                      >
+                        {carTypeList}
+                      &lt;/select>
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>
+
+              &lt;div className="field">
+                &lt;div className="columns">
+                  &lt;div className="column is-one-third">
+                    &lt;label className="label">Fuel consumption (Combined)&lt;/label>
+                    &lt;div className="control has-icons-right">
+                      &lt;input
+                        id="consumption"
+                        name="consumption"
+                        className="input"
+                        type="text"
+                        placeholder="X l/100km"
+                        onChange={(e) => {
+                          setConsumption(e.target.value);
+                        }}
+                      />
+                      &lt;span className="has-text-danger">
+                        {consumptionError}
+                      &lt;/span>
+                    &lt;/div>
+                  &lt;/div>
+                  &lt;div className="column is-one-third">
+                    &lt;label className="label">Select color&lt;/label>
+                    &lt;div className="select">
+                      &lt;select
+                        onChange={(e) => setColor(e.target.value)}
+                        value={color}
+                        id="color"
+                      >
+                        {colorList}
+                      &lt;/select>
+                    &lt;/div>
+                  &lt;/div>
+                  &lt;div className="column is-one-third">
+                    &lt;label className="label">Select type of transmission&lt;/label>
+                    &lt;div className="select">
+                      &lt;select
+                        onChange={(e) => setTransmission(e.target.value)}
+                        value={transmission}
+                        id="transmission"
+                      >
+                        {transmissionList}
+                      &lt;/select>
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>
+
+              &lt;div className="field">
+                &lt;div className="columns">
+                  &lt;div className="column">
+                    &lt;label className="label">Select brand of your car&lt;/label>
+                    &lt;div className="select">
+                      &lt;select
+                        onChange={(e) => setBrand(e.target.value)}
+                        value={brand}
+                        name="brand"
+                        id="brand"
+                      >
+                        {brandsList}
+                      &lt;/select>
+                    &lt;/div>
+                  &lt;/div>
+
+                  &lt;div className="column">
+                    &lt;div className="control">
+                      &lt;label className="label">Model&lt;/label>
+                      &lt;input
+                        className="input"
+                        name="model"
+                        placeholder="Type your car's model name"
+                        onChange={(e) => {
+                          setModel(e.target.value);
+                        }}
+                      />
+                      &lt;span className="has-text-danger">{modelError}&lt;/span>
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>
+
+              &lt;div className="field">
+                &lt;label className="label">Description&lt;/label>
+                &lt;textarea
+                  className="textarea"
+                  id="desc"
+                  onChange={(e) => {
+                    setDescription(e.target.value);
+                  }}
+                >&lt;/textarea>
+              &lt;/div>
+
+              &lt;div className="file">
+                &lt;label className="file-label">
+                  &lt;input
+                    onChange={(e) => setImage(e.target.files[0])}
+                    className="file-input"
+                    type="file"
+                    name="img-input"
+                    accept="image/*"
+                  />
+                  &lt;span className="file-cta">
+                    &lt;span className="file-icon">
+                      &lt;i className="fas fa-upload">&lt;/i>
+                    &lt;/span>
+                    &lt;span className="file-label">Upload an image&lt;/span>
+                  &lt;/span>
+                &lt;/label>
+              &lt;/div>
+              &lt;span className="has-text-danger">{imageError}&lt;/span>
+
+              &lt;div className="field is-grouped has-text-centered">
+                &lt;div className="control">
+                  &lt;button
+                    onClick={handleSubmit}
+                    id="submit"
+                    className="button has-background-navy-blue has-text-white"
+                  >
+                    Add car
+                  &lt;/button>
+                &lt;/div>
+              &lt;/div>
+            &lt;/div>
+          );
+        }
+      }}
+    &lt;/Async>
+  );
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AdminPanel">AdminPanel</a></li><li><a href="global.html#App">App</a></li><li><a href="global.html#getCats">getCats</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#Loader">Loader</a></li><li><a href="global.html#Signin">Signin</a></li><li><a href="global.html#Signup">Signup</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Mar 23 2022 20:14:29 GMT+0100 (Středoevropský standardní čas)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -28,6 +28,7 @@ module.exports = async (req, res, next) => {
       );
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
+        secure: true,
       });
       req.userData = data;
       next();

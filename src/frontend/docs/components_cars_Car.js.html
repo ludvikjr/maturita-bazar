@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/cars/Car.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/cars/Car.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router";
+import axios from "axios";
+import { nanoid } from "@reduxjs/toolkit";
+
+import "../../resources/style/Car.css";
+
+import Loader from "../Loader";
+import Async from "react-async";
+import CarListItem from "./CarListItem";
+
+/**
+ * Car page
+ * @returns Car page
+ */
+export default function Car() {
+  const { id } = useParams();
+
+  /**
+   * Checks if user didn't expire
+   * @returns username
+   */
+  const getUsername = () => {
+    try {
+      const username = localStorage.getItem("username");
+      const expiry = localStorage.getItem("expiry");
+
+      if (!username) {
+        return null;
+      }
+
+      const now = new Date();
+      if (now.getTime() > expiry) {
+        localStorage.removeItem("username");
+        return null;
+      }
+      return username;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  /**
+   * Gets resources from the API
+   * @returns resources
+   */
+  const getResources = async () => {
+    try {
+      const cars = await axios({
+        method: "get",
+        url: `/api/cars/${id}`,
+      });
+      console.log("cars loaded");
+      const cats = await axios({
+        method: "get",
+        url: `/api/cats/`,
+      });
+      console.log("cats loaded");
+      return { cats: cats.data.cats, car: cars.data.car };
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const [name, setName] = useState("");
+  const [power, setPower] = useState(0);
+  const [manufactured, setManufactured] = useState(0);
+  const [mileage, setMileage] = useState(0);
+  const [cost, setCost] = useState(0);
+  const [consumption, setConsumption] = useState(0);
+  const [description, setDescription] = useState("");
+  const [model, setModel] = useState("");
+
+  const [nameError, setNameError] = useState("");
+  const [powerError, setPowerError] = useState("");
+  const [mileageError, setMileageError] = useState("");
+  const [costError, setCostError] = useState("");
+  const [consumptionError, setConsumptionError] = useState("");
+  const [manufacturedError, setManufacturedError] = useState("");
+  const [modelError, setModelError] = useState("");
+
+  const [isEditing, setEditing] = useState(false);
+
+  return (
+    /**
+     * useAsync hook used here for loading
+     */
+    &lt;Async promiseFn={getResources} id={id}>
+      {({ data, err, isPending }) => {
+        if (isPending) return &lt;Loader />;
+        if (err) return &lt;div>oops something went wrong&lt;/div>;
+        if (!isPending) {
+          /**
+           * Data gotten from the request
+           */
+          const { car, cats } = data;
+
+          /**
+           * Deletes car
+           */
+          const handleDelete = async () => {
+            try {
+              const result = await axios({
+                method: "delete",
+                url: `/api/cars/${id}`,
+                withCredentials: true,
+              });
+              console.log(result);
+              window.location = "/";
+            } catch (err) {
+              console.log(err);
+            }
+          };
+
+          /**
+           * User input validation
+           */
+          let validation = true;
+          const validate = () => {
+            if (!document.getElementById("name").value) {
+              setNameError("Field is required");
+              validation = false;
+            }
+
+            if (!document.getElementById("model").value) {
+              setModelError("Field is required");
+              validation = false;
+            }
+
+            if (!document.getElementById("power").value) {
+              setPowerError("Field is required");
+              validation = false;
+            } else if (isNaN(document.getElementById("power").value)) {
+              setPowerError("Insert a number");
+              validation = false;
+            }
+
+            if (!document.getElementById("consumption").value) {
+              setConsumptionError("Field is required");
+              validation = false;
+            } else if (isNaN(document.getElementById("consumption").value)) {
+              setConsumptionError("Insert a number");
+              validation = false;
+            }
+
+            if (!document.getElementById("cost").value) {
+              setCostError("Field is required");
+              validation = false;
+            } else if (isNaN(document.getElementById("cost").value)) {
+              setCostError("Insert a number");
+              validation = false;
+            }
+
+            if (!document.getElementById("mileage").value) {
+              setMileageError("Field is required");
+              validation = false;
+            } else if (isNaN(document.getElementById("mileage").value)) {
+              setMileageError("Insert a number");
+              validation = false;
+            }
+
+            if (!document.getElementById("manufactured").value) {
+              setManufacturedError("Field is required");
+              validation = false;
+            } else if (isNaN(document.getElementById("manufactured").value)) {
+              setManufacturedError("Insert a number");
+              validation = false;
+            }
+          };
+
+          const handleSave = async () => {
+            setConsumptionError("");
+            setNameError("");
+            setManufacturedError("");
+            setMileageError("");
+            setCostError("");
+            setPowerError("");
+            setModelError("");
+            validate();
+            if (validation) {
+              try {
+                const result = await axios({
+                  method: "put",
+                  url: `/api/cars/${id}`,
+                  data: {
+                    name: document.getElementById("name").value,
+                    power: document.getElementById("power").value,
+                    manufactured: document.getElementById("manufactured").value,
+                    mileage: document.getElementById("mileage").value,
+                    cost: document.getElementById("cost").value,
+                    consumption: document.getElementById("consumption").value,
+                    description: document.getElementById("description").value,
+                    model: document.getElementById("model").value,
+                    color: document.getElementById("color").value,
+                    brand: document.getElementById("brand").value,
+                    type: document.getElementById("type").value,
+                    transmission: document.getElementById("transmission").value,
+                    imagePath: car.imagePath,
+                  },
+                  withCredentials: true,
+                });
+                console.log(result);
+                window.location = "/";
+              } catch (err) {
+                console.log(err);
+              }
+              setEditing(false);
+            }
+            validation = true;
+          };
+
+          const isOwner = () => {
+            if (car.owner === getUsername()) {
+              return true;
+            }
+            return false;
+          };
+
+          /**
+           * Makes option list
+           * @param {*} cats
+           * @returns option list
+           */
+          const makeOptionList = (cats) => {
+            const list = cats.map((item) => {
+              const option = (
+                &lt;option value={item.name} key={nanoid()}>
+                  {item.name}
+                &lt;/option>
+              );
+              return option;
+            });
+            return list;
+          };
+
+          const colorList = makeOptionList(cats.colors);
+          const brandsList = makeOptionList(cats.brands);
+          const transmissionList = makeOptionList(cats.transmissions);
+          const carTypeList = makeOptionList(cats.types);
+
+          /**
+           * Makes all car attributes into state
+           */
+          setName(car.name);
+          setPower(car.power);
+          setManufactured(car.manufactured);
+          setMileage(car.mileage);
+          setCost(car.cost);
+          setConsumption(car.consumption);
+          setDescription(car.description);
+          setModel(car.model);
+
+          /**
+           * default view
+           */
+          const defaultTemplate = (
+            &lt;div>
+              &lt;div className="box">
+                &lt;CarListItem item={car.name} rowName="Name" />
+                &lt;CarListItem item={car.cost} rowName="Cost" />
+                &lt;CarListItem item={car.transmission} rowName="Transmission" />
+                &lt;CarListItem item={car.type} rowName="Type" />
+                &lt;CarListItem
+                  item={
+                    car.power + " kW (" + Math.round(car.power * 1.36) + " PS)"
+                  }
+                  rowName="Power"
+                />
+                &lt;CarListItem
+                  item={car.consumption + " l/100 km (combined)"}
+                  rowName="Consumption"
+                />
+                &lt;CarListItem item={car.mileage + " km"} rowName="Power" />
+                &lt;CarListItem item={car.brand} rowName="Brand" />
+                &lt;CarListItem item={car.model} rowName="Model" />
+                &lt;CarListItem item={car.color} rowName="Color" />
+                &lt;CarListItem item={car.manufactured} rowName="Manufactured" />
+
+                &lt;div className="row columns">
+                  &lt;div className="column is-two-thirds-desktop">
+                    &lt;h6>Owner&lt;/h6>
+                  &lt;/div>
+                  &lt;div className="column is-one-third-desktop btm-column has-text-right-desktop">
+                    &lt;Link to={`/profile/${car.owner}`}>{car.owner}&lt;/Link>
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>
+
+              &lt;div className="description box">
+                &lt;h4>Description&lt;/h4>
+                &lt;p>
+                  {car.description
+                    ? car.description
+                    : "No description set by the user.."}
+                &lt;/p>
+              &lt;/div>
+
+              {isOwner() || localStorage.getItem("userType") === "admin" ? (
+                &lt;div>
+                  &lt;button
+                    onClick={() => setEditing(true)}
+                    id="edit"
+                    className="button has-background-navy-blue has-text-white"
+                  >
+                    Edit
+                  &lt;/button>
+                  &lt;button
+                    onClick={handleDelete}
+                    id="delete"
+                    className="button has-text-navy-blue"
+                  >
+                    Delete Car
+                  &lt;/button>
+                &lt;/div>
+              ) : (
+                &lt;div>&lt;/div>
+              )}
+            &lt;/div>
+          );
+
+          /**
+           * View for editing
+           */
+          const editTemplate = (
+            &lt;div>
+              &lt;div className="box">
+                &lt;div className="row columns">
+                  &lt;div className="column is-two-thirds-desktop">
+                    &lt;h6>Name&lt;/h6>
+                  &lt;/div>
+                  &lt;div className="column is-one-third-desktop btm-column">
+                    &lt;input
+                      type="text"
+                      className="input"
+                      defaultValue={name}
+                      id="name"
+                    />
+                    &lt;span className="has-text-danger">{nameError}&lt;/span>
+                  &lt;/div>
+                &lt;/div>
+
+                &lt;div className="row columns">
+                  &lt;div className="column is-two-thirds-desktop">
+                    &lt;h6>Cost&lt;/h6>
+                  &lt;/div>
+                  &lt;div className="column is-one-third-desktop btm-column">
+                    &lt;input
+                      type="text"
+                      className="input"
+                      defaultValue={cost}
+                      id="cost"
+                    />
+                    &lt;span className="has-text-danger">{costError}&lt;/span>
+                  &lt;/div>
+                &lt;/div>
+
+                &lt;div className="row columns">
+                  &lt;div className="column is-two-thirds-desktop">
+                    &lt;h6>Transmission&lt;/h6>
+                  &lt;/div>
+                  &lt;div className="column is-one-third-desktop btm-column">
+                    &lt;div className="select">
+                      &lt;select id="transmission" defaultValue={car.transmission}>
+                        {transmissionList}
+                      &lt;/select>
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/div>
+
+                &lt;div className="row columns">
+                  &lt;div className="column is-two-thirds-desktop">
+                    &lt;h6>Type&lt;/h6>
+                  &lt;/div>
+                  &lt;div className="column is-one-third-desktop btm-column">
+                    &lt;div className="select">
+                      &lt;select id="type" defaultValue={car.type}>
+                        {carTypeList}
+                      &lt;/select>
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/div>
+
+                &lt;div className="row columns">
+                  &lt;div className="column is-two-thirds-desktop">
+                    &lt;h6>Power&lt;/h6>
+                  &lt;/div>
+                  &lt;div className="column is-one-third-desktop btm-column">
+                    &lt;input
+                      type="text"
+                      className="input"
+                      defaultValue={power}
+                      id="power"
+                    />
+                    &lt;span className="has-text-danger">{powerError}&lt;/span>
+                  &lt;/div>
+                &lt;/div>
+
+                &lt;div className="row columns">
+                  &lt;div className="column is-two-thirds-desktop">
+                    &lt;h6>Brand&lt;/h6>
+                  &lt;/div>
+                  &lt;div className="column is-one-third-desktop btm-column">
+                    &lt;div className="select">
+                      &lt;select id="brand" defaultValue={car.brand}>
+                        {brandsList}
+                      &lt;/select>
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/div>
+
+                &lt;div className="row columns">
+                  &lt;div className="column is-two-thirds-desktop">
+                    &lt;h6>Consumption&lt;/h6>
+                  &lt;/div>
+                  &lt;div className="column is-one-third-desktop btm-column">
+                    &lt;input
+                      type="text"
+                      className="input"
+                      defaultValue={consumption}
+                      id="consumption"
+                    />
+                    &lt;span className="has-text-danger">{consumptionError}&lt;/span>
+                  &lt;/div>
+                &lt;/div>
+
+                &lt;div className="row columns">
+                  &lt;div className="column is-two-thirds-desktop">
+                    &lt;h6>Model&lt;/h6>
+                  &lt;/div>
+                  &lt;div className="column is-one-third-desktop btm-column">
+                    &lt;input
+                      type="text"
+                      className="input"
+                      defaultValue={model}
+                      id="model"
+                    />
+                    &lt;span className="has-text-danger">{modelError}&lt;/span>
+                  &lt;/div>
+                &lt;/div>
+
+                &lt;div className="row columns">
+                  &lt;div className="column is-two-thirds-desktop">
+                    &lt;h6>Color&lt;/h6>
+                  &lt;/div>
+                  &lt;div className="column is-one-third-desktop btm-column">
+                    &lt;div className="select">
+                      &lt;select id="color" defaultValue={car.color}>
+                        {colorList}
+                      &lt;/select>
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/div>
+
+                &lt;div className="row columns">
+                  &lt;div className="column is-two-thirds-desktop">
+                    &lt;h6>Manufactured&lt;/h6>
+                  &lt;/div>
+                  &lt;div className="column is-one-third-desktop btm-column">
+                    &lt;input
+                      type="text"
+                      className="input"
+                      defaultValue={manufactured}
+                      id="manufactured"
+                    />
+                    &lt;span className="has-text-danger">{manufacturedError}&lt;/span>
+                  &lt;/div>
+                &lt;/div>
+
+                &lt;div className="row columns">
+                  &lt;div className="column is-two-thirds-desktop">
+                    &lt;h6>Mileage&lt;/h6>
+                  &lt;/div>
+                  &lt;div className="column is-one-third-desktop btm-column">
+                    &lt;input
+                      type="text"
+                      className="input"
+                      defaultValue={mileage}
+                      id="mileage"
+                    />
+                    &lt;span className="has-text-danger">{mileageError}&lt;/span>
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>
+
+              &lt;div className="description box">
+                &lt;h4>Description&lt;/h4>
+                &lt;textarea
+                  className="textarea"
+                  defaultValue={description}
+                  id="description"
+                />
+              &lt;/div>
+
+              &lt;button
+                onClick={handleSave}
+                id="edit"
+                className="button has-background-navy-blue has-text-white"
+              >
+                Save
+              &lt;/button>
+            &lt;/div>
+          );
+          return (
+            &lt;div className="car-container container">
+              &lt;div className="content">
+                &lt;div className="box">
+                  &lt;img id="car_img" alt="Car" src={car.imagePath} />
+                &lt;/div>
+
+                {isEditing ? editTemplate : defaultTemplate}
+              &lt;/div>
+            &lt;/div>
+          );
+        }
+      }}
+    &lt;/Async>
+  );
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AdminPanel">AdminPanel</a></li><li><a href="global.html#App">App</a></li><li><a href="global.html#getCats">getCats</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#Loader">Loader</a></li><li><a href="global.html#Signin">Signin</a></li><li><a href="global.html#Signup">Signup</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Mar 23 2022 20:14:29 GMT+0100 (Středoevropský standardní čas)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
