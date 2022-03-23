@@ -77,9 +77,11 @@ exports.signIn = async (req, res) => {
         );
         res.cookie("accessToken", accessToken, {
           httpOnly: true,
+          secure: true,
         });
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
+          secure: true,
         });
 
         return res.status(200).json({
