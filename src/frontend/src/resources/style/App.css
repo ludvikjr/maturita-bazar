@@ -79,6 +79,15 @@ hr {
   background-color: #004701 !important;
 }
 
+.mfooter {
+  width: 100%;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  height: 40px;
+  padding: 10px;
+}
+
 @media screen and (max-width: 1280px) {
   #maincontent {
     padding-left: 0;

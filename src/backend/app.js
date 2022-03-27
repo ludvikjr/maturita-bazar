@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 const app = express();
 const cookieParser = require("cookie-parser");
+const mongoSanitize = require("express-mongo-sanitize");
 
 /**
  * paths to all the routers
@@ -23,6 +24,15 @@ app.use(
   cors({
     credentials: true,
     origin: process.env.ORIGIN,
+  })
+);
+
+/**
+ * Middleware for data sanitization
+ */
+app.use(
+  mongoSanitize({
+    replaceWith: "_",
   })
 );
 

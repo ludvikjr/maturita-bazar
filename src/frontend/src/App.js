@@ -163,6 +163,9 @@ function App() {
           <Route path="/admin/" render={() => <AdminPanel />} />
           <Route path="/cars/:id" render={(props) => <Car {...props} />} />
         </Switch>
+        <footer className="has-background-navy-blue has-text-white mfooter">
+          Made by Ludvik Roubicek, a student of SPSMB
+        </footer>
       </div>
     </Router>
   );

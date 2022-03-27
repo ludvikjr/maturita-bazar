@@ -40,7 +40,9 @@ export default function Header() {
   const defaultView = (
     <nav className=" navbar has-background-white-bis">
       <div className="navbar-brand">
-        <img src="../../resources/logo.png" alt="" />
+        <span className="navbar-item navbar-logo is-size-4">
+          Car<span className="has-text-navy-blue">port</span>
+        </span>
         <div
           onClick={() => {
             document.getElementById("nav-list").classList.toggle("is-active");
@@ -90,7 +92,9 @@ export default function Header() {
   const loggedView = (
     <nav className=" navbar has-background-white-bis">
       <div className="navbar-brand">
-        <img src="../../resources/logo.png" alt="" />
+        <span className="navbar-item navbar-logo is-size-4">
+          Car<span className="has-text-navy-blue">port</span>
+        </span>
         <div
           onClick={() => {
             document.getElementById("nav-list").classList.toggle("is-active");
