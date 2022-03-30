@@ -26,10 +26,7 @@ module.exports = async (req, res, next) => {
         process.env.JWT_ACCESS_KEY,
         { expiresIn: "3m", noTimestamp: true }
       );
-      res.cookie("accessToken", accessToken, {
-        httpOnly: true,
-        secure: true,
-      });
+      res.cookie("accessToken", accessToken);
       req.userData = data;
       next();
     } catch (err) {

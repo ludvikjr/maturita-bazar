@@ -41,7 +41,7 @@ export default function Header() {
     <nav className=" navbar has-background-white-bis">
       <div className="navbar-brand">
         <span className="navbar-item navbar-logo is-size-4">
-          Car<span className="has-text-navy-blue">port</span>
+          Car<span className="has-text-navy-blue is-size-4">port</span>
         </span>
         <div
           onClick={() => {
@@ -93,7 +93,7 @@ export default function Header() {
     <nav className=" navbar has-background-white-bis">
       <div className="navbar-brand">
         <span className="navbar-item navbar-logo is-size-4">
-          Car<span className="has-text-navy-blue">port</span>
+          Car<span className="has-text-navy-blue is-size-4">port</span>
         </span>
         <div
           onClick={() => {

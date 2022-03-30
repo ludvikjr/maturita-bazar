@@ -9,6 +9,5 @@ const reviewController = require("../controllers/userReviews.js");
  */
 router.post("/", auth, reviewController.addReview);
 router.get("/:username", reviewController.getUsersReviews);
-router.delete("/:id", auth, reviewController.deleteReview);
 
 module.exports = router;

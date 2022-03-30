@@ -75,14 +75,8 @@ exports.signIn = async (req, res) => {
           process.env.JWT_REFRESH_KEY,
           { expiresIn: "2h", noTimestamp: true }
         );
-        res.cookie("accessToken", accessToken, {
-          httpOnly: true,
-          secure: true,
-        });
-        res.cookie("refreshToken", refreshToken, {
-          httpOnly: true,
-          secure: true,
-        });
+        res.cookie("accessToken", accessToken);
+        res.cookie("refreshToken", refreshToken);
 
         return res.status(200).json({
           msg: "Auth successful",
@@ -111,16 +105,17 @@ exports.updateUser = async (req, res) => {
      * userData = data extracted from JWT token
      */
     const id = req.params.userId;
-    const user = await User.findById(id);
+    const user = await User.findOne({_id: id}).exec();
     if (
       req.userData.username != user.username &&
-      !(req.userData.userType === "admin" || user.userType === "admin")
+    (!(req.userData.userType === "superadmin" || req.userData.userType === "admin") || user.userType === "superadmin")
     ) {
+      if (req.body.userType && req.userData.userType != "superadmin") return res.status(403);
       return res.status(403);
     }
     const updates = req.body;
-    await User.findByIdAndUpdate(id, updates).exec();
-    res.status(200).json({
+    const result = await User.findOneAndUpdate({_id: user._id}, updates).exec();
+    return res.status(200).json({
       message: "User updated",
       request: {
         type: "PUT",

@@ -113,18 +113,20 @@ export default function Profile() {
     validateUser();
     if (validation) {
       try {
-        await axios({
+        const result = await axios({
           method: "put",
-          url: `/api/users/${user._id}`,
+          url: `api/users/${user._id}`,
           data: {
             firstName: firstName,
             lastName: lastName,
             email: email,
             about: description,
             phoneNumber: number,
+            userType: userType
           },
           withCredentials: true,
         });
+        console.log(result);
         console.log("submission successful");
         setEditing(false);
         window.location = `/profile/${user.username}`;
@@ -322,7 +324,7 @@ export default function Profile() {
               {localStorage.getItem("userType") === "superadmin" ? (
                 <div className="contact-row select">
                   <b>User privileges</b>
-                  <select value={userType}>
+                  <select value={userType} onChange={e => setUserType(e.target.value)}>
                     <option value="user">User</option>
                     <option value="admin">Admin</option>
                   </select>
