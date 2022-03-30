@@ -1,6 +1,9 @@
 # maturita-bazar
 Project made for my final exams
 ## How to run your own app
+### Requirements
+- Docker engine version 20.10.14 or later
+- Node version 16.14.2 or later
 ### How to setup .env files
 So that you can run your project, you need to create .env files in /src/frontend and /src/backend
 #### Frontend
