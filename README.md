@@ -4,6 +4,7 @@ Project made for my final exams
 ### Requirements
 - Docker engine version 20.10.14 or later
 - Node version 16.14.2 or later
+- WSL 2
 ### How to setup .env files
 So that you can run your project, you need to create .env files in /src/frontend and /src/backend
 #### Frontend
