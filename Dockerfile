@@ -10,5 +10,5 @@ COPY start.sh /usr/local/bin/
 
 RUN cd /tmp/frontend; npm install; npm run build;
 
-ENTRYPOINT [ "/usr/local/bin/start.sh" ]
+ENTRYPOINT [ "sh", "/usr/local/bin/start.sh" ]
 

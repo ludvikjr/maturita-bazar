@@ -115,14 +115,14 @@ export default function Profile() {
       try {
         const result = await axios({
           method: "put",
-          url: `api/users/${user._id}`,
+          url: `/api/users/${user._id}`,
           data: {
             firstName: firstName,
             lastName: lastName,
             email: email,
             about: description,
             phoneNumber: number,
-            userType: userType
+            userType: userType,
           },
           withCredentials: true,
         });
@@ -322,9 +322,13 @@ export default function Profile() {
                 />
               </div>
               {localStorage.getItem("userType") === "superadmin" ? (
-                <div className="contact-row select">
+                <div className="contact-row field">
                   <b>User privileges</b>
-                  <select value={userType} onChange={e => setUserType(e.target.value)}>
+                  <select
+                    className="select role-select"
+                    value={userType}
+                    onChange={(e) => setUserType(e.target.value)}
+                  >
                     <option value="user">User</option>
                     <option value="admin">Admin</option>
                   </select>

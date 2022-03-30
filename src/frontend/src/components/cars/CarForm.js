@@ -403,7 +403,12 @@ export default function CarForm() {
               <div className="file">
                 <label className="file-label">
                   <input
-                    onChange={(e) => setImage(e.target.files[0])}
+                    onChange={(e) => {
+                      setImage(e.target.files[0]);
+                      if (e.target.files[0].size > 4194304) {
+                        setImageError("File too large");
+                      }
+                    }}
                     className="file-input"
                     type="file"
                     name="img-input"

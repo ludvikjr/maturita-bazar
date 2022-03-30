@@ -6,6 +6,10 @@
   transition: 0.2s;
 }
 
+.navbar-end {
+  width: 100%;
+}
+
 #nav-list {
   box-shadow: none;
   width: 100%;

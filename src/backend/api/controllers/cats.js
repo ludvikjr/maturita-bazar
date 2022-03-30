@@ -154,7 +154,11 @@ exports.getCats = async (req, res) => {
  */
 exports.deleteCat = async (req, res) => {
   try {
-    if (req.userData.userType != "admin") return res.status(403);
+    if (
+      req.userData.userType != "admin" &&
+      req.userData.userType != "superadmin"
+    )
+      return res.status(403);
     const catId = req.params.id;
     const catType = req.body.catType;
 

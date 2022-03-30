@@ -105,16 +105,23 @@ exports.updateUser = async (req, res) => {
      * userData = data extracted from JWT token
      */
     const id = req.params.userId;
-    const user = await User.findOne({_id: id}).exec();
+    const user = await User.findOne({ _id: id }).exec();
     if (
       req.userData.username != user.username &&
-    (!(req.userData.userType === "superadmin" || req.userData.userType === "admin") || user.userType === "superadmin")
+      (!(
+        req.userData.userType === "superadmin" ||
+        req.userData.userType === "admin"
+      ) ||
+        user.userType === "superadmin" ||
+        (user.userType === "admin" && req.userData.userType === "admin") ||
+        (req.body.userType != "user" && req.body.userType != "admin"))
     ) {
-      if (req.body.userType && req.userData.userType != "superadmin") return res.status(403);
+      if (req.body.userType && req.userData.userType != "superadmin")
+        return res.status(403);
       return res.status(403);
     }
     const updates = req.body;
-    const result = await User.findOneAndUpdate({_id: user._id}, updates).exec();
+    await User.findOneAndUpdate({ _id: user._id }, updates).exec();
     return res.status(200).json({
       message: "User updated",
       request: {
@@ -139,10 +146,10 @@ exports.deleteUser = async (req, res) => {
     /**
      * userData = data extracted from JWT token
      */
-    const username = req.userData.username;
-    const user = await User.findOne({ username: username }).exec();
+    const id = req.params.id;
+    const user = await User.findOne({ _id: id }).exec();
     if (
-      (user.username != username &&
+      (user.username != req.userData.username &&
         !(
           req.userData.userType === "admin" ||
           req.userData.userType === "superadmin"
@@ -153,7 +160,7 @@ exports.deleteUser = async (req, res) => {
       return res.status(403);
     }
 
-    const result = await User.findByIdAndDelete(req.params.id).exec();
+    const result = await User.findByIdAndDelete(id).exec();
     if (result) {
       return res
         .status(200)

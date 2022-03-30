@@ -40,7 +40,7 @@ export default function Header() {
   const defaultView = (
     <nav className=" navbar has-background-white-bis">
       <div className="navbar-brand">
-        <span className="navbar-item navbar-logo is-size-4">
+        <span className="navbar-item navbar-logo is-size-4 has-text-grey">
           Car<span className="has-text-navy-blue is-size-4">port</span>
         </span>
         <div
@@ -92,7 +92,7 @@ export default function Header() {
   const loggedView = (
     <nav className=" navbar has-background-white-bis">
       <div className="navbar-brand">
-        <span className="navbar-item navbar-logo is-size-4">
+        <span className="navbar-item navbar-logo is-size-4 has-text-grey">
           Car<span className="has-text-navy-blue is-size-4">port</span>
         </span>
         <div

@@ -44,7 +44,7 @@
 
 .negative-rating {
   background-color: rgba(153, 0, 0, 30%);
-  color: rgba(255, 255, 255, 30%)
+  color: rgba(255, 255, 255, 30%);
 }
 
 .negative-rating:hover,
@@ -70,7 +70,7 @@
 .fa-thumbs-down:hover,
 .fa-thumbs-up:hover,
 .fa-thumbs-up:focus {
-  color: rgba(255, 255, 255)
+  color: rgba(255, 255, 255);
 }
 
 .loading {
@@ -80,6 +80,22 @@
 
 .submit-error {
   margin-left: 10px;
+}
+
+.role-select {
+  border-radius: 4px;
+  border-color: #dbdbdb;
+  background-color: #fff;
+  color: #363636;
+}
+
+.role-select:hover {
+  border-color: #b5b5b5;
+}
+
+.role-select:focus,
+.role-select::after {
+  border-color: #485fc7;
 }
 
 @media screen and (max-width: 900px) {
